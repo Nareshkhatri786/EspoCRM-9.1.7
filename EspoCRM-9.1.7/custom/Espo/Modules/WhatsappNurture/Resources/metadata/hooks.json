@@ -1,0 +1,14 @@
+{
+    "Lead": {
+        "afterSave": [
+            {
+                "className": "Espo\\Modules\\WhatsappNurture\\Listeners\\NewLeadListener"
+            }
+        ],
+        "beforeSave": [
+            {
+                "className": "Espo\\Modules\\WhatsappNurture\\Listeners\\StageChangeListener"
+            }
+        ]
+    }
+}

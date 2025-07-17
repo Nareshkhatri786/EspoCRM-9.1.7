@@ -1,0 +1,95 @@
+{
+    "fields": {
+        "user": {
+            "type": "link",
+            "required": true,
+            "view": "views/fields/assigned-user"
+        },
+        "flow": {
+            "type": "link",
+            "required": true,
+            "entity": "NurtureFlow"
+        },
+        "stage": {
+            "type": "enum",
+            "required": true,
+            "options": [
+                "newLead",
+                "qualification", 
+                "proposal",
+                "won",
+                "lost",
+                "followUp",
+                "nurture"
+            ],
+            "default": "newLead"
+        },
+        "templateName": {
+            "type": "varchar",
+            "required": true,
+            "maxLength": 255
+        },
+        "parameters": {
+            "type": "jsonObject",
+            "storeArrayValues": true,
+            "displayAsLabel": false
+        },
+        "imageLink": {
+            "type": "url",
+            "strip": true
+        },
+        "isActive": {
+            "type": "bool",
+            "default": true
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        }
+    },
+    "links": {
+        "user": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "flow": {
+            "type": "belongsTo",
+            "entity": "NurtureFlow"
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "createdAt",
+        "order": "desc"
+    },
+    "indexes": {
+        "userFlowStage": {
+            "unique": true,
+            "columns": ["userId", "flowId", "stage", "deleted"]
+        },
+        "flow": {
+            "columns": ["flowId", "deleted"]
+        }
+    }
+}

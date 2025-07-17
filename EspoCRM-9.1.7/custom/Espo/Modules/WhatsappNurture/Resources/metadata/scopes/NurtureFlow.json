@@ -1,0 +1,7 @@
+{
+    "acl": "record",
+    "hasAssignedUser": false,
+    "entity": true,
+    "object": true,
+    "isAdministration": true
+}

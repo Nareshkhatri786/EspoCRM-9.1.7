@@ -1,0 +1,3 @@
+services:
+    WhatsappService:
+        className: Espo\Modules\WhatsappNurture\Services\WhatsappService
