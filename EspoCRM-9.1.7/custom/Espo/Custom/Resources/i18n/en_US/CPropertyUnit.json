@@ -1,0 +1,30 @@
+{
+    "fields": {
+        "unitNumber": "Unit Number",
+        "status": "Status",
+        "holdExpiryDate": "Hold Expiry Date",
+        "project": "Project",
+        "holdOpportunity": "Hold Opportunity",
+        "shortlistedOpportunities": "Shortlisted Opportunities", 
+        "tokenDate": "Token Date",
+        "bookingDate": "Booking Date"
+    },
+    "links": {
+        "project": "Project",
+        "holdOpportunity": "Hold Opportunity",
+        "shortlistedOpportunities": "Shortlisted Opportunities"
+    },
+    "labels": {
+        "Create CPropertyUnit": "Create Property Unit"
+    },
+    "options": {
+        "status": {
+            "Available": "Available",
+            "Shortlisted": "Shortlisted", 
+            "Hold": "Hold",
+            "Token Received": "Token Received",
+            "Booked": "Booked",
+            "Cancelled": "Cancelled"
+        }
+    }
+}

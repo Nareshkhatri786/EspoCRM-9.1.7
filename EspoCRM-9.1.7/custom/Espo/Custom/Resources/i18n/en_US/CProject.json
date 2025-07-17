@@ -1,0 +1,21 @@
+{
+    "fields": {
+        "name": "Name",
+        "location": "Location",
+        "description": "Description", 
+        "status": "Status",
+        "propertyUnits": "Property Units"
+    },
+    "links": {
+        "propertyUnits": "Property Units"
+    },
+    "labels": {
+        "Create CProject": "Create Project"
+    },
+    "options": {
+        "status": {
+            "Active": "Active",
+            "Inactive": "Inactive"
+        }
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "filters": {
+        "available": {
+            "whereClause": {
+                "status": "Available"
+            }
+        },
+        "onHold": {
+            "whereClause": {
+                "status": "Hold"
+            }
+        },
+        "booked": {
+            "whereClause": {
+                "status": "Booked"
+            }
+        },
+        "expiredHolds": {
+            "whereClause": {
+                "status": "Hold",
+                "holdExpiryDate<": "$now"
+            }
+        }
+    }
+}

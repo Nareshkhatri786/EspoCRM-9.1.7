@@ -1,0 +1,26 @@
+[
+    {
+        "route": "/CPropertyUnit/action/processExpiredHolds",
+        "method": "POST",
+        "params": {
+            "controller": "CPropertyUnit",
+            "action": "processExpiredHolds"
+        }
+    },
+    {
+        "route": "/CPropertyUnit/action/getAvailableUnits",
+        "method": "GET",
+        "params": {
+            "controller": "CPropertyUnit",
+            "action": "getAvailableUnits"
+        }
+    },
+    {
+        "route": "/CPropertyUnit/action/getProjectReport",
+        "method": "GET",
+        "params": {
+            "controller": "CPropertyUnit",
+            "action": "getProjectReport"
+        }
+    }
+]

@@ -1,0 +1,6 @@
+Unit Number,Project Name,Status,Hold Expiry Date,Token Date,Booking Date,Assigned User
+"Unit-001","Downtown Plaza","Available",,,,admin
+"Unit-002","Downtown Plaza","Shortlisted",,,,admin
+"Unit-003","Riverside Towers","Hold","2024-02-01",,,admin
+"Unit-004","Riverside Towers","Token Received",,"2024-01-15",,admin
+"Unit-005","Green Valley","Booked",,"2024-01-10","2024-01-20",admin

@@ -1,0 +1,141 @@
+{
+    "fields": {
+        "unitNumber": {
+            "type": "varchar",
+            "required": true,
+            "pattern": "$noBadCharacters"
+        },
+        "status": {
+            "type": "enum",
+            "options": ["Available", "Shortlisted", "Hold", "Token Received", "Booked", "Cancelled"],
+            "default": "Available",
+            "displayAsLabel": true,
+            "style": {
+                "Available": "success",
+                "Shortlisted": "primary",
+                "Hold": "warning",
+                "Token Received": "info",
+                "Booked": "success",
+                "Cancelled": "danger"
+            },
+            "view": "custom:views/c-property-unit/fields/status"
+        },
+        "holdExpiryDate": {
+            "type": "date",
+            "view": "custom:views/c-property-unit/fields/hold-expiry-date"
+        },
+        "project": {
+            "type": "link",
+            "required": true
+        },
+        "holdOpportunity": {
+            "type": "link",
+            "view": "custom:views/c-property-unit/fields/hold-opportunity"
+        },
+        "shortlistedOpportunities": {
+            "type": "linkMultiple",
+            "view": "custom:views/c-property-unit/fields/shortlisted-opportunities"
+        },
+        "tokenDate": {
+            "type": "date"
+        },
+        "bookingDate": {
+            "type": "date"
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true,
+            "fieldManagerParamList": [
+                "useNumericFormat"
+            ]
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true,
+            "fieldManagerParamList": [
+                "useNumericFormat"
+            ]
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user",
+            "fieldManagerParamList": []
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user",
+            "fieldManagerParamList": []
+        },
+        "assignedUser": {
+            "type": "link",
+            "required": false,
+            "view": "views/fields/assigned-user"
+        },
+        "teams": {
+            "type": "linkMultiple",
+            "view": "views/fields/teams"
+        }
+    },
+    "links": {
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "assignedUser": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "teams": {
+            "type": "hasMany",
+            "entity": "Team",
+            "relationName": "entityTeam",
+            "layoutRelationshipsDisabled": true
+        },
+        "project": {
+            "type": "belongsTo",
+            "entity": "CProject",
+            "foreign": "propertyUnits"
+        },
+        "holdOpportunity": {
+            "type": "belongsTo",
+            "entity": "Opportunity",
+            "foreign": "heldPropertyUnits"
+        },
+        "shortlistedOpportunities": {
+            "type": "hasMany",
+            "entity": "Opportunity",
+            "foreign": "shortlistedPropertyUnits",
+            "relationName": "cPropertyUnitShortlistedOpportunity"
+        }
+    },
+    "collection": {
+        "orderBy": "createdAt",
+        "order": "desc"
+    },
+    "indexes": {
+        "status": {
+            "columns": ["status", "deleted"]
+        },
+        "project": {
+            "columns": ["projectId", "deleted"]
+        },
+        "unitNumber": {
+            "columns": ["unitNumber", "deleted"]
+        },
+        "holdExpiryDate": {
+            "columns": ["holdExpiryDate", "deleted"]
+        },
+        "assignedUser": {
+            "columns": ["assignedUserId", "deleted"]
+        },
+        "createdAt": {
+            "columns": ["createdAt", "deleted"]
+        }
+    }
+}

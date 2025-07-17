@@ -1,0 +1,6 @@
+[
+    {"name": "name", "link": true},
+    {"name": "location"},
+    {"name": "status"},
+    {"name": "assignedUser"}
+]

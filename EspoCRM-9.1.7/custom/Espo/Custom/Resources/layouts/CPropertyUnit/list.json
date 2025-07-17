@@ -1,0 +1,9 @@
+[
+    {"name": "unitNumber", "link": true},
+    {"name": "project"},
+    {"name": "status"},
+    {"name": "holdExpiryDate"},
+    {"name": "assignedUser"},
+    {"name": "createdAt"},
+    {"name": "modifiedAt"}
+]

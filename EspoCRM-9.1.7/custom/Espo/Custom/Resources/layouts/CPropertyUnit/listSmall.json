@@ -1,0 +1,6 @@
+[
+    {"name": "unitNumber", "link": true},
+    {"name": "status"},
+    {"name": "holdExpiryDate"},
+    {"name": "assignedUser"}
+]
