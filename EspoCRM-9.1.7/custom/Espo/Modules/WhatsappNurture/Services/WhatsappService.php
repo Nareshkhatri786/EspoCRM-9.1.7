@@ -6,7 +6,6 @@ use Espo\Core\Services\Base;
 use Espo\Core\Di;
 use Espo\ORM\EntityManager;
 use Espo\Core\Utils\Log;
-use Espo\Core\Utils\Http\Client;
 use Espo\Entities\Job;
 use Espo\Core\Utils\DateTime as DateTimeUtil;
 
@@ -99,25 +98,37 @@ class WhatsappService extends Base implements
                 $payload['template']['components'] = $components;
             }
 
-            // Make API call
+            // Make API call using cURL
             $url = "https://app.waofficial.com/api/integration/whatsapp-message/{$phoneNumberId}/messages";
             
-            $client = new Client();
-            $response = $client->request('POST', $url, [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $accessToken,
-                    'Content-Type' => 'application/json'
+            $curl = curl_init();
+            curl_setopt_array($curl, [
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => json_encode($payload),
+                CURLOPT_HTTPHEADER => [
+                    'Authorization: Bearer ' . $accessToken,
+                    'Content-Type: application/json'
                 ],
-                'body' => json_encode($payload)
+                CURLOPT_TIMEOUT => 30
             ]);
 
-            $statusCode = $response->getStatusCode();
+            $response = curl_exec($curl);
+            $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            $error = curl_error($curl);
+            curl_close($curl);
+
+            if ($error) {
+                $this->log->error("WhatsApp cURL error: " . $error);
+                return false;
+            }
             
             if ($statusCode >= 200 && $statusCode < 300) {
                 $this->log->info("WhatsApp message sent successfully to {$to} using template {$templateName}");
                 return true;
             } else {
-                $this->log->error("WhatsApp API error: {$statusCode} - " . $response->getBody());
+                $this->log->error("WhatsApp API error: {$statusCode} - " . $response);
                 return false;
             }
 
