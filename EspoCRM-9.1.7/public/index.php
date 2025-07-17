@@ -1,44 +1,49 @@
 <?php
-/************************************************************************
- * This file is part of EspoCRM.
- *
- * EspoCRM – Open Source CRM application.
- * Copyright (C) 2014-2025 Yurii Kuznietsov, Taras Machyshyn, Oleksii Avramenko
- * Website: https://www.espocrm.com
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
- *
- * The interactive user interfaces in modified source and object code versions
- * of this program must display Appropriate Legal Notices, as required under
- * Section 5 of the GNU Affero General Public License version 3.
- *
- * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the "EspoCRM" word.
- ************************************************************************/
+// PWA Access Point for EspoCRM
+// This file handles PWA routing
 
-include "../bootstrap.php";
+$requestUri = $_SERVER['REQUEST_URI'];
+$publicRoot = dirname(__FILE__);
+$espoRoot = dirname($publicRoot);
 
-use Espo\Core\Application;
-use Espo\Core\ApplicationRunners\Client;
-use Espo\Core\ApplicationRunners\EntryPoint;
-
-$app = new Application();
-
-if (filter_has_var(INPUT_GET, 'entryPoint')) {
-    $app->run(EntryPoint::class);
-
-    exit;
+// Handle PWA routes
+if (strpos($requestUri, '/pwa') === 0) {
+    $pwaPath = $requestUri === '/pwa' ? '/pwa/' : $requestUri;
+    
+    if ($pwaPath === '/pwa/') {
+        // Serve PWA index
+        $pwaIndex = $publicRoot . '/pwa/index.html';
+        if (file_exists($pwaIndex)) {
+            header('Content-Type: text/html');
+            readfile($pwaIndex);
+            exit;
+        }
+    } else {
+        // Serve PWA assets
+        $filePath = $publicRoot . $pwaPath;
+        if (file_exists($filePath)) {
+            $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+            $mimeTypes = [
+                'css' => 'text/css',
+                'js' => 'application/javascript',
+                'json' => 'application/json',
+                'png' => 'image/png',
+                'ico' => 'image/x-icon',
+                'svg' => 'image/svg+xml',
+                'woff' => 'font/woff',
+                'woff2' => 'font/woff2'
+            ];
+            
+            if (isset($mimeTypes[$extension])) {
+                header('Content-Type: ' . $mimeTypes[$extension]);
+            }
+            
+            readfile($filePath);
+            exit;
+        }
+    }
 }
 
-$app->run(Client::class);
+// Default: redirect to main EspoCRM
+header('Location: ../index.php');
+exit;

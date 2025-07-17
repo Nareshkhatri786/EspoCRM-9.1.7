@@ -1,0 +1,11 @@
+{
+    "menu": {
+        "detail": {
+            "pwaApp": {
+                "label": "Open Mobile App",
+                "action": "openPwaApp",
+                "iconClass": "fas fa-mobile-alt"
+            }
+        }
+    }
+}

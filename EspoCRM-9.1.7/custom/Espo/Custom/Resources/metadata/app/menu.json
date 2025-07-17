@@ -1,0 +1,10 @@
+{
+    "quickCreate": {
+        "pwaApp": {
+            "url": "/pwa",
+            "label": "Mobile App",
+            "target": "_blank",
+            "iconClass": "fas fa-mobile-alt"
+        }
+    }
+}

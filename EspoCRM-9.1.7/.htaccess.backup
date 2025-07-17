@@ -1,15 +1,3 @@
-# EspoCRM PWA Integration
-RewriteEngine On
-
-# PWA Routes
-RewriteRule ^pwa/?$ public/pwa/index.html [L]
-RewriteRule ^pwa/(.*)$ public/pwa/$1 [L]
-
-# Service Worker (must be served from root for scope)
-RewriteRule ^sw\.js$ public/pwa/sw.js [L]
-RewriteRule ^manifest\.webmanifest$ public/pwa/manifest.webmanifest [L]
-
-# Original EspoCRM rules below:
 <ifModule mod_headers.c>
     Header always set Access-Control-Allow-Methods "POST, GET, PUT, PATCH, DELETE"
 </ifModule>
