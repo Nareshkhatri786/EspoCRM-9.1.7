@@ -1,0 +1,15 @@
+{
+    "links": {
+        "heldPropertyUnits": {
+            "type": "hasMany",
+            "entity": "CPropertyUnit",
+            "foreign": "holdOpportunity"
+        },
+        "shortlistedPropertyUnits": {
+            "type": "hasMany",
+            "entity": "CPropertyUnit",
+            "foreign": "shortlistedOpportunities",
+            "relationName": "cPropertyUnitShortlistedOpportunity"
+        }
+    }
+}

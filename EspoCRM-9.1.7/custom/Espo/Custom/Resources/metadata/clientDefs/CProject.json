@@ -1,0 +1,24 @@
+{
+    "controller": "controllers/record",
+    "iconClass": "fas fa-building",
+    "color": "#3498db",
+    "menu": {
+        "list": {
+            "buttons": [
+                {
+                    "label": "Create Project",
+                    "action": "quickCreate"
+                }
+            ]
+        }
+    },
+    "relationshipPanels": {
+        "propertyUnits": {
+            "view": "views/record/panels/relationship",
+            "label": "Property Units",
+            "create": true,
+            "rowActionsView": "views/record/row-actions/relationship",
+            "layout": "listSmall"
+        }
+    }
+}

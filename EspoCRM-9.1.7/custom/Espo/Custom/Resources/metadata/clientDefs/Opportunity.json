@@ -1,0 +1,18 @@
+{
+    "relationshipPanels": {
+        "heldPropertyUnits": {
+            "view": "views/record/panels/relationship",
+            "label": "Held Property Units",
+            "create": false,
+            "rowActionsView": "views/record/row-actions/relationship",
+            "layout": "listSmall"
+        },
+        "shortlistedPropertyUnits": {
+            "view": "views/record/panels/relationship",
+            "label": "Shortlisted Property Units",
+            "create": false,
+            "rowActionsView": "views/record/row-actions/relationship",
+            "layout": "listSmall"
+        }
+    }
+}

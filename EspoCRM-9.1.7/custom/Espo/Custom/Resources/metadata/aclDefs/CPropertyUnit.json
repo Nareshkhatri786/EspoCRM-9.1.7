@@ -1,0 +1,20 @@
+{
+    "fields": {
+        "assignedUser": {
+            "read": "own",
+            "edit": "own"
+        },
+        "teams": {
+            "read": "team",
+            "edit": "team"
+        },
+        "status": {
+            "edit": "own"
+        }
+    },
+    "actions": {
+        "processExpiredHolds": {
+            "adminOnly": true
+        }
+    }
+}

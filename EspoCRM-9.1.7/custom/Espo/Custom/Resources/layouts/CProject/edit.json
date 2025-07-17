@@ -1,0 +1,18 @@
+[
+    [
+        {"name": "name", "fullWidth": true},
+        false
+    ],
+    [
+        {"name": "location"},
+        {"name": "status"}
+    ],
+    [
+        {"name": "description", "fullWidth": true},
+        false
+    ],
+    [
+        {"name": "assignedUser"},
+        {"name": "teams"}
+    ]
+]

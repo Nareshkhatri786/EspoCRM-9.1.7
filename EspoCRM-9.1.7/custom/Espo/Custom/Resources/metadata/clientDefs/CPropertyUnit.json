@@ -1,0 +1,122 @@
+{
+    "controller": "controllers/record",
+    "iconClass": "fas fa-home",
+    "color": "#27ae60",
+    "menu": {
+        "list": {
+            "buttons": [
+                {
+                    "label": "Create Property Unit",
+                    "action": "quickCreate"
+                },
+                {
+                    "label": "Import",
+                    "action": "import"
+                },
+                {
+                    "label": "Process Expired Holds",
+                    "action": "processExpiredHolds",
+                    "acl": "edit",
+                    "aclScope": "CPropertyUnit"
+                }
+            ]
+        }
+    },
+    "filterList": [
+        {
+            "name": "available",
+            "label": "Available",
+            "where": {
+                "status": "Available"
+            }
+        },
+        {
+            "name": "onHold",
+            "label": "On Hold",
+            "where": {
+                "status": "Hold"
+            }
+        },
+        {
+            "name": "booked",
+            "label": "Booked",
+            "where": {
+                "status": "Booked"
+            }
+        },
+        {
+            "name": "expiredHolds",
+            "label": "Expired Holds",
+            "where": {
+                "status": "Hold",
+                "holdExpiryDate<": "now"
+            }
+        }
+    ],
+    "dynamicLogic": {
+        "fields": {
+            "holdExpiryDate": {
+                "visible": {
+                    "conditionGroup": [
+                        {
+                            "type": "equals",
+                            "attribute": "status",
+                            "value": "Hold"
+                        }
+                    ]
+                },
+                "required": {
+                    "conditionGroup": [
+                        {
+                            "type": "equals",
+                            "attribute": "status", 
+                            "value": "Hold"
+                        }
+                    ]
+                }
+            },
+            "holdOpportunity": {
+                "visible": {
+                    "conditionGroup": [
+                        {
+                            "type": "equals",
+                            "attribute": "status",
+                            "value": "Hold"
+                        }
+                    ]
+                },
+                "required": {
+                    "conditionGroup": [
+                        {
+                            "type": "equals",
+                            "attribute": "status",
+                            "value": "Hold"
+                        }
+                    ]
+                }
+            },
+            "tokenDate": {
+                "visible": {
+                    "conditionGroup": [
+                        {
+                            "type": "equals",
+                            "attribute": "status",
+                            "value": "Token Received"
+                        }
+                    ]
+                }
+            },
+            "bookingDate": {
+                "visible": {
+                    "conditionGroup": [
+                        {
+                            "type": "equals",
+                            "attribute": "status",
+                            "value": "Booked"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

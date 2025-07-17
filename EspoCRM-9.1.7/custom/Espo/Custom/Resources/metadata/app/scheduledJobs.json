@@ -1,0 +1,8 @@
+{
+    "scheduledJobs": {
+        "ProcessExpiredHolds": {
+            "jobClassName": "Espo\\Custom\\Jobs\\ProcessExpiredHolds",
+            "scheduling": "0 2 * * *"
+        }
+    }
+}

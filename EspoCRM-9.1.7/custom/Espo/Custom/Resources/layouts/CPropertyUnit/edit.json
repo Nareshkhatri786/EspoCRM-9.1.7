@@ -1,0 +1,26 @@
+[
+    [
+        {"name": "unitNumber"},
+        {"name": "status"}
+    ],
+    [
+        {"name": "project"},
+        {"name": "holdExpiryDate"}
+    ],
+    [
+        {"name": "holdOpportunity"},
+        false
+    ],
+    [
+        {"name": "shortlistedOpportunities", "fullWidth": true},
+        false
+    ],
+    [
+        {"name": "tokenDate"},
+        {"name": "bookingDate"}
+    ],
+    [
+        {"name": "assignedUser"},
+        {"name": "teams"}
+    ]
+]
