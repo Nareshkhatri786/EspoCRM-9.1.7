@@ -3,13 +3,20 @@
     <head>
         <title>{{applicationName}}</title>
         <script type="application/json" data-name="loader-params">{{loaderParams}}</script>{{scriptsHtml}}
-        <link rel="stylesheet" href="{{basePath}}{{stylesheet}}?r={{cacheTimestamp}}" id='main-stylesheet'>{{additionalStyleSheetsHtml}}{{linksHtml}}
+        <link rel="stylesheet" href="{{basePath}}{{stylesheet}}?r={{cacheTimestamp}}" id='main-stylesheet'>{{additionalStyleSheetsHtml}}
+        <link rel="stylesheet" href="{{basePath}}client/css/pwa.css?r={{cacheTimestamp}}" id='pwa-stylesheet'>{{linksHtml}}
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
         <meta content="utf-8" http-equiv="encoding">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta name="description" content="{{applicationDescription}}">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-title" content="EspoCRM">
+        <meta name="theme-color" content="#2196F3">
+        <meta name="msapplication-TileColor" content="#2196F3">
+        <meta name="msapplication-tap-highlight" content="no">
+        <link rel="manifest" href="{{basePath}}manifest.json">
         <link rel="alternate icon" href="{{basePath}}{{faviconAlternate}}" type="image/x-icon">
         <link rel="icon" href="{{basePath}}{{favicon}}" type="{{faviconType}}">
         <script nonce="{{nonce}}">
@@ -57,5 +64,295 @@
             <p class="credit small">&copy; 2025
             <a href="https://www.espocrm.com" title="Powered by EspoCRM" rel="noopener" target="_blank">EspoCRM</a></p>
         </footer>
+        
+        <!-- PWA Service Worker Registration -->
+        <script nonce="{{nonce}}">
+            // Register Service Worker for PWA functionality
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', async () => {
+                    try {
+                        const registration = await navigator.serviceWorker.register('{{basePath}}sw.js', {
+                            scope: '{{basePath}}'
+                        });
+                        
+                        console.log('ServiceWorker registered successfully:', registration.scope);
+                        
+                        // Handle service worker updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // New service worker available
+                                    showUpdateAvailable();
+                                }
+                            });
+                        });
+                        
+                        // Initialize PWA features
+                        initializePWAFeatures(registration);
+                        
+                    } catch (error) {
+                        console.log('ServiceWorker registration failed:', error);
+                    }
+                });
+            }
+            
+            function showUpdateAvailable() {
+                // Show update notification
+                if (window.Espo && window.Espo.Ui) {
+                    window.Espo.Ui.notify('App update available. Reload to get the latest version.', 'info', 10000);
+                }
+            }
+            
+            function initializePWAFeatures(registration) {
+                // Initialize offline data management
+                initializeOfflineSync();
+                
+                // Initialize notifications
+                initializeNotifications(registration);
+                
+                // Initialize call integration
+                initializeCallIntegration();
+                
+                // Initialize install prompt
+                initializeInstallPrompt();
+            }
+            
+            // Offline sync initialization
+            function initializeOfflineSync() {
+                window.addEventListener('online', () => {
+                    console.log('App is online');
+                    if (navigator.serviceWorker.controller) {
+                        navigator.serviceWorker.controller.postMessage({
+                            type: 'SYNC_NOW'
+                        });
+                    }
+                });
+                
+                window.addEventListener('offline', () => {
+                    console.log('App is offline');
+                });
+            }
+            
+            // Notification initialization
+            function initializeNotifications(registration) {
+                if ('Notification' in window && 'PushManager' in window) {
+                    // Request notification permission
+                    if (Notification.permission === 'default') {
+                        setTimeout(() => {
+                            Notification.requestPermission().then(permission => {
+                                console.log('Notification permission:', permission);
+                                if (permission === 'granted') {
+                                    setupPushNotifications(registration);
+                                }
+                            });
+                        }, 5000); // Wait 5 seconds before asking
+                    } else if (Notification.permission === 'granted') {
+                        setupPushNotifications(registration);
+                    }
+                }
+            }
+            
+            function setupPushNotifications(registration) {
+                // Set up push notification subscriptions
+                registration.pushManager.getSubscription().then(subscription => {
+                    if (!subscription) {
+                        // Subscribe to push notifications
+                        const applicationServerKey = urlBase64ToUint8Array('{{pushNotificationKey}}'); // You'll need to set this
+                        return registration.pushManager.subscribe({
+                            userVisibleOnly: true,
+                            applicationServerKey: applicationServerKey
+                        });
+                    }
+                    return subscription;
+                }).then(subscription => {
+                    if (subscription) {
+                        // Send subscription to server
+                        sendSubscriptionToServer(subscription);
+                        console.log('Push notification subscription successful');
+                    }
+                }).catch(error => {
+                    console.log('Push notification subscription failed:', error);
+                });
+            }
+            
+            function sendSubscriptionToServer(subscription) {
+                // Send subscription details to EspoCRM backend
+                fetch('{{basePath}}api/v1/PushSubscription', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(subscription)
+                }).catch(error => {
+                    console.log('Failed to send subscription to server:', error);
+                });
+            }
+            
+            function urlBase64ToUint8Array(base64String) {
+                const padding = '='.repeat((4 - base64String.length % 4) % 4);
+                const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+                const rawData = window.atob(base64);
+                const outputArray = new Uint8Array(rawData.length);
+                for (let i = 0; i < rawData.length; ++i) {
+                    outputArray[i] = rawData.charCodeAt(i);
+                }
+                return outputArray;
+            }
+            
+            // Call integration initialization
+            function initializeCallIntegration() {
+                // Add call outcome tracking
+                window.addEventListener('beforeunload', () => {
+                    // Save any pending call data
+                    if (window.currentCallData) {
+                        localStorage.setItem('pendingCallData', JSON.stringify(window.currentCallData));
+                    }
+                });
+                
+                // Check for pending call data on load
+                const pendingCallData = localStorage.getItem('pendingCallData');
+                if (pendingCallData) {
+                    try {
+                        const callData = JSON.parse(pendingCallData);
+                        setTimeout(() => {
+                            showCallOutcomeDialog(callData);
+                        }, 2000);
+                    } catch (error) {
+                        console.error('Error parsing pending call data:', error);
+                    }
+                    localStorage.removeItem('pendingCallData');
+                }
+            }
+            
+            function showCallOutcomeDialog(callData) {
+                if (window.Espo && window.Espo.Ui) {
+                    // Create a simple outcome dialog
+                    const outcomeOptions = ['Answered', 'Not Answered', 'Busy', 'Voicemail'];
+                    let dialogHtml = '<div class="call-outcome-dialog">';
+                    dialogHtml += '<h4>Call Outcome</h4>';
+                    dialogHtml += '<p>How did the call with ' + (callData.contact || 'contact') + ' go?</p>';
+                    dialogHtml += '<div class="outcome-buttons">';
+                    outcomeOptions.forEach(outcome => {
+                        dialogHtml += '<button class="btn btn-default outcome-btn" data-outcome="' + outcome + '">' + outcome + '</button>';
+                    });
+                    dialogHtml += '</div></div>';
+                    
+                    // You would integrate this with EspoCRM's modal system
+                    console.log('Call outcome dialog:', callData);
+                }
+            }
+            
+            // Install prompt initialization
+            let deferredPrompt;
+            function initializeInstallPrompt() {
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    deferredPrompt = e;
+                    
+                    // Show install button after user has used the app for a while
+                    setTimeout(() => {
+                        showInstallPrompt();
+                    }, 30000); // Show after 30 seconds
+                });
+                
+                window.addEventListener('appinstalled', () => {
+                    console.log('PWA was installed');
+                    deferredPrompt = null;
+                });
+            }
+            
+            function showInstallPrompt() {
+                if (deferredPrompt && window.Espo && window.Espo.Ui) {
+                    window.Espo.Ui.confirm(
+                        'Install EspoCRM as an app for a better experience?',
+                        {
+                            confirmText: 'Install',
+                            cancelText: 'Maybe Later'
+                        },
+                        () => {
+                            deferredPrompt.prompt();
+                            deferredPrompt.userChoice.then((choiceResult) => {
+                                if (choiceResult.outcome === 'accepted') {
+                                    console.log('User accepted the install prompt');
+                                } else {
+                                    console.log('User dismissed the install prompt');
+                                }
+                                deferredPrompt = null;
+                            });
+                        }
+                    );
+                }
+            }
+            
+            // Make functions globally available
+            window.EspoCRMPWA = {
+                makeCall: function(phoneNumber, contactData) {
+                    if (phoneNumber) {
+                        // Store call data for outcome tracking
+                        window.currentCallData = {
+                            phoneNumber: phoneNumber,
+                            contact: contactData ? contactData.name : null,
+                            contactId: contactData ? contactData.id : null,
+                            startTime: new Date().toISOString()
+                        };
+                        
+                        // Open phone dialer
+                        window.open('tel:' + phoneNumber, '_system');
+                        
+                        // Show call outcome dialog after a delay
+                        setTimeout(() => {
+                            showCallOutcomeDialog(window.currentCallData);
+                        }, 5000);
+                    }
+                },
+                
+                recordCallOutcome: function(outcome, notes) {
+                    if (window.currentCallData) {
+                        const callRecord = {
+                            ...window.currentCallData,
+                            outcome: outcome,
+                            notes: notes || '',
+                            endTime: new Date().toISOString()
+                        };
+                        
+                        // Save to EspoCRM
+                        fetch('{{basePath}}api/v1/Call', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                name: 'Call to ' + callRecord.contact,
+                                phoneNumber: callRecord.phoneNumber,
+                                status: outcome === 'Answered' ? 'Held' : 'Not Held',
+                                direction: 'Outbound',
+                                dateStart: callRecord.startTime,
+                                dateEnd: callRecord.endTime,
+                                description: callRecord.notes
+                            })
+                        }).then(response => {
+                            if (response.ok) {
+                                console.log('Call record saved successfully');
+                                if (window.Espo && window.Espo.Ui) {
+                                    window.Espo.Ui.success('Call record saved');
+                                }
+                            }
+                        }).catch(error => {
+                            console.error('Failed to save call record:', error);
+                            // Store for offline sync
+                            if (navigator.serviceWorker.controller) {
+                                navigator.serviceWorker.controller.postMessage({
+                                    type: 'STORE_CALL_RECORD',
+                                    data: callRecord
+                                });
+                            }
+                        });
+                        
+                        window.currentCallData = null;
+                    }
+                }
+            };
+        </script>
     </body>
 </html>

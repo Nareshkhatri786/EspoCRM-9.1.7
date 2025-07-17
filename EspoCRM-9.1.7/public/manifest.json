@@ -1,0 +1,93 @@
+{
+    "name": "EspoCRM Mobile",
+    "short_name": "EspoCRM",
+    "description": "EspoCRM Mobile Progressive Web App with offline support and notifications",
+    "theme_color": "#2196F3",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "orientation": "portrait",
+    "scope": "/",
+    "start_url": "/",
+    "lang": "en",
+    "dir": "ltr",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "client/img/favicon-196.png",
+            "sizes": "196x196",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "client/img/logo-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "client/img/logo-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Meetings",
+            "short_name": "Meetings",
+            "description": "View and manage meetings",
+            "url": "/#Meeting",
+            "icons": [
+                {
+                    "src": "client/img/meeting-icon-96.png",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Tasks",
+            "short_name": "Tasks",
+            "description": "View and manage tasks",
+            "url": "/#Task",
+            "icons": [
+                {
+                    "src": "client/img/task-icon-96.png",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Calls",
+            "short_name": "Calls",
+            "description": "View and manage calls",
+            "url": "/#Call",
+            "icons": [
+                {
+                    "src": "client/img/call-icon-96.png",
+                    "sizes": "96x96"
+                }
+            ]
+        }
+    ],
+    "categories": [
+        "business",
+        "productivity",
+        "crm"
+    ],
+    "screenshots": [
+        {
+            "src": "client/img/screenshot1.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "platform": "wide",
+            "label": "EspoCRM Dashboard"
+        },
+        {
+            "src": "client/img/screenshot2.png",
+            "sizes": "750x1334",
+            "type": "image/png",
+            "platform": "narrow",
+            "label": "EspoCRM Mobile View"
+        }
+    ]
+}

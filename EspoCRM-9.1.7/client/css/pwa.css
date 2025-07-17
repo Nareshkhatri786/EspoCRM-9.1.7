@@ -1,0 +1,400 @@
+/**
+ * EspoCRM PWA Responsive Styles
+ * Additional styles for Progressive Web App functionality
+ */
+
+/* PWA Install Button */
+.pwa-install-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+    z-index: 9999;
+    transition: all 0.3s ease;
+    display: none;
+}
+
+.pwa-install-button:hover {
+    background: #1976D2;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(33, 150, 243, 0.6);
+}
+
+.pwa-install-button.show {
+    display: block;
+    animation: slideInUp 0.3s ease;
+}
+
+/* Offline indicator */
+.offline-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #ff5722;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    font-size: 12px;
+    z-index: 10000;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+}
+
+.offline-indicator.show {
+    transform: translateY(0);
+}
+
+.offline-indicator.online {
+    background: #4caf50;
+}
+
+/* PWA specific responsive improvements */
+@media (max-width: 768px) {
+    /* Improve touch targets */
+    .btn, .action, button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Better spacing for mobile */
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    /* Improved navigation */
+    .navbar-nav {
+        margin: 0;
+    }
+    
+    /* Better form controls */
+    .form-control {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 12px;
+    }
+    
+    /* Improved table scrolling */
+    .table-responsive {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Better modal sizing */
+    .modal-dialog {
+        margin: 10px;
+        max-width: calc(100vw - 20px);
+    }
+    
+    /* Improved list items */
+    .list-row {
+        padding: 15px 10px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    /* Better call buttons */
+    a[href^="tel:"] {
+        color: #2196F3;
+        font-weight: 500;
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 20px;
+        background: rgba(33, 150, 243, 0.1);
+        display: inline-block;
+        margin: 2px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Extra small screens */
+    .pwa-install-button {
+        bottom: 10px;
+        right: 10px;
+        padding: 12px 16px;
+        font-size: 12px;
+    }
+    
+    /* Smaller margins */
+    .container {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    
+    /* Stack buttons vertically */
+    .btn-group-vertical .btn {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 500px) {
+    .navbar {
+        min-height: 40px;
+    }
+    
+    .navbar-brand {
+        padding: 5px 15px;
+    }
+    
+    .modal-dialog {
+        margin: 5px auto;
+        max-height: calc(100vh - 10px);
+    }
+}
+
+/* Dark mode support for PWA */
+@media (prefers-color-scheme: dark) {
+    .pwa-install-button {
+        background: #1976D2;
+        color: white;
+    }
+    
+    .offline-indicator {
+        background: #d32f2f;
+    }
+    
+    .offline-indicator.online {
+        background: #388e3c;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .pwa-install-button {
+        border: 2px solid white;
+    }
+    
+    a[href^="tel:"] {
+        border: 1px solid #2196F3;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .pwa-install-button,
+    .offline-indicator {
+        transition: none;
+        animation: none;
+    }
+}
+
+/* Call outcome dialog styles */
+.call-outcome-dialog {
+    text-align: center;
+    padding: 20px;
+}
+
+.call-outcome-dialog h4 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.call-outcome-dialog p {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.outcome-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.outcome-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 15px;
+    border: 2px solid #2196F3;
+    background: white;
+    color: #2196F3;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.outcome-btn:hover,
+.outcome-btn:focus {
+    background: #2196F3;
+    color: white;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+    .outcome-buttons {
+        flex-direction: column;
+    }
+    
+    .outcome-btn {
+        min-width: auto;
+    }
+}
+
+/* Notification styles */
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10001;
+    max-width: 300px;
+}
+
+.notification {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 10px;
+    padding: 15px;
+    border-left: 4px solid #2196F3;
+    animation: slideInRight 0.3s ease;
+}
+
+.notification.success {
+    border-left-color: #4caf50;
+}
+
+.notification.warning {
+    border-left-color: #ff9800;
+}
+
+.notification.error {
+    border-left-color: #f44336;
+}
+
+.notification-title {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.notification-body {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Animations */
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Sync indicator */
+.sync-indicator {
+    position: fixed;
+    top: 50px;
+    right: 20px;
+    background: #2196F3;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    z-index: 9998;
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.sync-indicator.show {
+    display: block;
+}
+
+.sync-indicator.syncing {
+    background: #ff9800;
+}
+
+.sync-indicator.synced {
+    background: #4caf50;
+}
+
+.sync-indicator.error {
+    background: #f44336;
+}
+
+/* iOS specific styles */
+@supports (-webkit-touch-callout: none) {
+    /* iOS Safari specific */
+    .form-control {
+        border-radius: 0;
+        -webkit-appearance: none;
+    }
+    
+    input[type="search"] {
+        -webkit-appearance: none;
+        border-radius: 4px;
+    }
+}
+
+/* Android specific styles */
+@media (max-width: 768px) {
+    /* Android Chrome specific */
+    .navbar {
+        padding-top: env(safe-area-inset-top, 0);
+    }
+    
+    .container {
+        padding-bottom: env(safe-area-inset-bottom, 0);
+    }
+}
+
+/* Standalone mode styles */
+@media (display-mode: standalone) {
+    /* When app is installed as PWA */
+    body {
+        padding-top: env(safe-area-inset-top, 0);
+        padding-left: env(safe-area-inset-left, 0);
+        padding-right: env(safe-area-inset-right, 0);
+        padding-bottom: env(safe-area-inset-bottom, 0);
+    }
+    
+    .navbar {
+        background: #2196F3;
+        color: white;
+    }
+    
+    .navbar-brand {
+        color: white !important;
+    }
+    
+    /* Hide browser-specific elements */
+    .browser-only {
+        display: none !important;
+    }
+    
+    /* Show PWA-specific elements */
+    .pwa-only {
+        display: block !important;
+    }
+}
