@@ -1,0 +1,16 @@
+{
+    "dynamicHandler": "custom:whatsapp-nurture-handler",
+    "menu": {
+        "detail": {
+            "buttons": [
+                {
+                    "label": "Send WhatsApp Template",
+                    "name": "sendWhatsappTemplate",
+                    "action": "sendWhatsappTemplate",
+                    "style": "success",
+                    "acl": "edit"
+                }
+            ]
+        }
+    }
+}

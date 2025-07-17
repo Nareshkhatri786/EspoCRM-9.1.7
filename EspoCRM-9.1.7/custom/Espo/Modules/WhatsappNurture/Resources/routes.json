@@ -1,0 +1,18 @@
+[
+    {
+        "route": "/WhatsappNurture/action/:action",
+        "method": "post",
+        "params": {
+            "controller": "WhatsappNurture",
+            "action": ":action"
+        }
+    },
+    {
+        "route": "/WhatsappNurture/action/:action",
+        "method": "get",
+        "params": {
+            "controller": "WhatsappNurture",
+            "action": ":action"
+        }
+    }
+]

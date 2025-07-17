@@ -1,0 +1,67 @@
+{
+    "fields": {
+        "user": {
+            "type": "link",
+            "required": true,
+            "view": "views/fields/assigned-user"
+        },
+        "accessToken": {
+            "type": "varchar",
+            "maxLength": 255,
+            "required": true,
+            "view": "views/fields/varchar"
+        },
+        "phoneNumberId": {
+            "type": "varchar",
+            "maxLength": 100,
+            "required": true,
+            "view": "views/fields/varchar"
+        },
+        "isActive": {
+            "type": "bool",
+            "default": true
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        }
+    },
+    "links": {
+        "user": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "createdAt",
+        "order": "desc"
+    },
+    "indexes": {
+        "user": {
+            "unique": true,
+            "columns": ["userId", "deleted"]
+        }
+    }
+}
