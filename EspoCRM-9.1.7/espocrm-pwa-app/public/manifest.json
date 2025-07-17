@@ -1,0 +1,57 @@
+{
+  "name": "EspoCRM PWA",
+  "short_name": "EspoCRM",
+  "description": "Progressive Web App for EspoCRM integration with call management, notifications, and offline support",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#2c5282",
+  "background_color": "#ffffff",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "url": "/dashboard",
+      "description": "View your dashboard with upcoming tasks and meetings"
+    },
+    {
+      "name": "Make Call",
+      "url": "/dashboard#call",
+      "description": "Quickly make a phone call"
+    },
+    {
+      "name": "Settings",
+      "url": "/settings",
+      "description": "Configure app preferences"
+    }
+  ],
+  "share_target": {
+    "action": "/dashboard",
+    "method": "GET",
+    "params": {
+      "phone": "phone"
+    }
+  },
+  "prefer_related_applications": false
+}

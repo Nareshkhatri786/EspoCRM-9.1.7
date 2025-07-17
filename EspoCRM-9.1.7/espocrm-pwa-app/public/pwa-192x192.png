@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <rect width="192" height="192" fill="#2c5282" rx="24"/>
+  <g fill="white">
+    <!-- Phone icon -->
+    <path d="M60 60c0-6.627 5.373-12 12-12h48c6.627 0 12 5.373 12 12v72c0 6.627-5.373 12-12 12H72c-6.627 0-12-5.373-12-12V60z" fill="none" stroke="white" stroke-width="3"/>
+    <circle cx="96" cy="120" r="6"/>
+    <rect x="78" y="72" width="36" height="36" rx="4" fill="none" stroke="white" stroke-width="2"/>
+    
+    <!-- CRM elements -->
+    <circle cx="90" cy="84" r="3"/>
+    <circle cx="102" cy="84" r="3"/>
+    <circle cx="96" cy="96" r="3"/>
+    
+    <!-- Text -->
+    <text x="96" y="160" text-anchor="middle" font-family="Arial" font-size="14" font-weight="bold">CRM</text>
+  </g>
+</svg>

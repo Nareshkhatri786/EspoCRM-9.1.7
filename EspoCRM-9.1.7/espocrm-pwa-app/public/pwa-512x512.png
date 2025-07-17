@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#2c5282" rx="64"/>
+  <g fill="white">
+    <!-- Phone icon -->
+    <path d="M160 160c0-17.673 14.327-32 32-32h128c17.673 0 32 14.327 32 32v192c0 17.673-14.327 32-32 32H192c-17.673 0-32-14.327-32-32V160z" fill="none" stroke="white" stroke-width="8"/>
+    <circle cx="256" cy="320" r="16"/>
+    <rect x="208" y="192" width="96" height="96" rx="12" fill="none" stroke="white" stroke-width="6"/>
+    
+    <!-- CRM elements -->
+    <circle cx="240" cy="224" r="8"/>
+    <circle cx="272" cy="224" r="8"/>
+    <circle cx="256" cy="256" r="8"/>
+    
+    <!-- Text -->
+    <text x="256" y="420" text-anchor="middle" font-family="Arial" font-size="36" font-weight="bold">EspoCRM</text>
+    <text x="256" y="460" text-anchor="middle" font-family="Arial" font-size="24">PWA</text>
+  </g>
+</svg>

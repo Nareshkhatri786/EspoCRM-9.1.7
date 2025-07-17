@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
+  <rect width="180" height="180" fill="#2c5282" rx="20"/>
+  <g fill="white">
+    <path d="M56 56c0-6.627 5.373-12 12-12h44c6.627 0 12 5.373 12 12v68c0 6.627-5.373 12-12 12H68c-6.627 0-12-5.373-12-12V56z" fill="none" stroke="white" stroke-width="3"/>
+    <circle cx="90" cy="112" r="5"/>
+    <rect x="74" y="68" width="32" height="32" rx="4" fill="none" stroke="white" stroke-width="2"/>
+    <circle cx="84" cy="78" r="2"/>
+    <circle cx="96" cy="78" r="2"/>
+    <circle cx="90" cy="90" r="2"/>
+    <text x="90" y="148" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">CRM</text>
+  </g>
+</svg>
