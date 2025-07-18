@@ -1,0 +1,1 @@
+[2025-07-18 06:55:52] ERROR: (0) Uncaught Exception RuntimeException: "Config file 'data/config.php' not found." at /home/runner/work/EspoCRM-9.1.7/EspoCRM-9.1.7/EspoCRM-9.1.7/application/Espo/Core/Utils/Config/ConfigWriter.php line 112 :: /home/runner/work/EspoCRM-9.1.7/EspoCRM-9.1.7/EspoCRM-9.1.7/application/Espo/Core/Utils/Config/ConfigWriter.php(112)
