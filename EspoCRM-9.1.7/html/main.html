@@ -10,6 +10,9 @@
         <meta name="description" content="{{applicationDescription}}">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="theme-color" content="#3c8dbc">
+        <link rel="manifest" href="{{basePath}}manifest.json">
         <link rel="alternate icon" href="{{basePath}}{{faviconAlternate}}" type="image/x-icon">
         <link rel="icon" href="{{basePath}}{{favicon}}" type="{{faviconType}}">
         <script nonce="{{nonce}}">
@@ -49,6 +52,144 @@
 
                 init();
             });
+        </script>
+        
+        <!-- PWA Initialization -->
+        <script nonce="{{nonce}}">
+            // PWA Service Worker Registration
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('{{basePath}}sw.js')
+                        .then((registration) => {
+                            console.log('Service Worker registered successfully:', registration.scope);
+                            
+                            // Listen for updates
+                            registration.addEventListener('updatefound', () => {
+                                const newWorker = registration.installing;
+                                newWorker.addEventListener('statechange', () => {
+                                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                        // New version available
+                                        showUpdateNotification();
+                                    }
+                                });
+                            });
+                        })
+                        .catch((error) => {
+                            console.log('Service Worker registration failed:', error);
+                        });
+                });
+            }
+            
+            // PWA Install Prompt
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                showInstallButton();
+            });
+            
+            function showInstallButton() {
+                // Create install button if not exists
+                if (!document.getElementById('pwa-install-btn')) {
+                    const installBtn = document.createElement('button');
+                    installBtn.id = 'pwa-install-btn';
+                    installBtn.innerHTML = '📱 Install App';
+                    installBtn.style.cssText = `
+                        position: fixed;
+                        bottom: 20px;
+                        right: 20px;
+                        background: #3c8dbc;
+                        color: white;
+                        border: none;
+                        padding: 10px 15px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 14px;
+                        z-index: 10000;
+                        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                        display: none;
+                    `;
+                    
+                    installBtn.addEventListener('click', async () => {
+                        if (deferredPrompt) {
+                            deferredPrompt.prompt();
+                            const { outcome } = await deferredPrompt.userChoice;
+                            console.log('User choice:', outcome);
+                            deferredPrompt = null;
+                            installBtn.style.display = 'none';
+                        }
+                    });
+                    
+                    document.body.appendChild(installBtn);
+                    
+                    // Show after app loads
+                    setTimeout(() => {
+                        installBtn.style.display = 'block';
+                    }, 3000);
+                }
+            }
+            
+            function showUpdateNotification() {
+                // Create update notification
+                const updateNotification = document.createElement('div');
+                updateNotification.innerHTML = `
+                    <div style="position: fixed; top: 20px; right: 20px; background: #f39c12; color: white; padding: 15px; border-radius: 5px; z-index: 10001; max-width: 300px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
+                        <div style="font-weight: bold; margin-bottom: 8px;">Update Available!</div>
+                        <div style="margin-bottom: 10px; font-size: 14px;">A new version of EspoCRM is available.</div>
+                        <button onclick="window.location.reload()" style="background: white; color: #f39c12; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-right: 5px;">Update Now</button>
+                        <button onclick="this.parentElement.parentElement.remove()" style="background: transparent; color: white; border: 1px solid white; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Later</button>
+                    </div>
+                `;
+                document.body.appendChild(updateNotification);
+                
+                // Auto-remove after 10 seconds
+                setTimeout(() => {
+                    if (updateNotification.parentNode) {
+                        updateNotification.remove();
+                    }
+                }, 10000);
+            }
+            
+            // Handle offline/online events
+            window.addEventListener('online', () => {
+                showConnectionStatus('online');
+            });
+            
+            window.addEventListener('offline', () => {
+                showConnectionStatus('offline');
+            });
+            
+            function showConnectionStatus(status) {
+                const existingStatus = document.getElementById('connection-status');
+                if (existingStatus) {
+                    existingStatus.remove();
+                }
+                
+                const statusDiv = document.createElement('div');
+                statusDiv.id = 'connection-status';
+                statusDiv.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    padding: 10px 20px;
+                    border-radius: 5px;
+                    color: white;
+                    font-weight: bold;
+                    z-index: 10002;
+                    ${status === 'online' ? 'background: #27ae60;' : 'background: #e74c3c;'}
+                `;
+                statusDiv.textContent = status === 'online' ? '🌐 Back Online' : '📡 You\'re Offline';
+                
+                document.body.appendChild(statusDiv);
+                
+                // Auto-remove after 3 seconds
+                setTimeout(() => {
+                    if (statusDiv.parentNode) {
+                        statusDiv.remove();
+                    }
+                }, 3000);
+            }
         </script>
     </head>
     <body data-id="{{applicationId}}">
