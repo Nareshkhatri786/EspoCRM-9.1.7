@@ -141,17 +141,19 @@ class WhatsappService extends Base implements
     /**
      * Schedule next message in nurture flow
      *
-     * @param int $leadId Lead ID
+     * @param int $entityId Entity ID (Lead or Opportunity)
      * @param int $userId User ID 
      * @param string $flowName Flow name
      * @param string $currentStage Current stage
+     * @param string $entityType Entity type (Lead or Opportunity)
      * @return bool Success status
      */
     public function scheduleNextMessage(
-        int $leadId,
+        int $entityId,
         int $userId,
         string $flowName,
-        string $currentStage
+        string $currentStage,
+        string $entityType = 'Lead'
     ): bool {
         try {
             // Find the nurture flow
@@ -202,7 +204,8 @@ class WhatsappService extends Base implements
                 'name' => 'SendWhatsappNurtureMessage',
                 'className' => 'Espo\Modules\WhatsappNurture\Jobs\SendWhatsappNurtureMessage',
                 'data' => [
-                    'leadId' => $leadId,
+                    'entityId' => $entityId,
+                    'entityType' => $entityType,
                     'userId' => $userId,
                     'flowName' => $flowName,
                     'stage' => $nextStep['stage']
@@ -214,7 +217,7 @@ class WhatsappService extends Base implements
 
             $this->entityManager->saveEntity($job);
 
-            $this->log->info("Scheduled WhatsApp message for lead {$leadId}, stage '{$nextStep['stage']}' at " . $executeAt->format('Y-m-d H:i:s'));
+            $this->log->info("Scheduled WhatsApp message for {$entityType} {$entityId}, stage '{$nextStep['stage']}' at " . $executeAt->format('Y-m-d H:i:s'));
             
             return true;
 
@@ -228,23 +231,34 @@ class WhatsappService extends Base implements
      * Resolve variable placeholders in parameters
      *
      * @param array $parameters Parameter template with placeholders
-     * @param object $lead Lead entity
+     * @param object $entity Lead or Opportunity entity
      * @return array Resolved parameters
      */
-    public function resolveParameters(array $parameters, object $lead): array
+    public function resolveParameters(array $parameters, object $entity): array
     {
         $resolved = [];
+        $entityType = strtolower($entity->getEntityType());
         
         foreach ($parameters as $key => $value) {
             if (is_string($value)) {
-                // Replace placeholders like {{lead.firstName}}
+                // Replace placeholders like {{lead.firstName}} or {{opportunity.name}}
                 $resolved[$key] = preg_replace_callback(
-                    '/\{\{lead\.(\w+)\}\}/',
-                    function ($matches) use ($lead) {
+                    '/\{\{(?:lead|opportunity|entity)\.(\w+)\}\}/',
+                    function ($matches) use ($entity) {
                         $attribute = $matches[1];
-                        return $lead->has($attribute) ? (string) $lead->get($attribute) : '';
+                        return $entity->has($attribute) ? (string) $entity->get($attribute) : '';
                     },
                     $value
+                );
+                
+                // Also support entity-specific placeholders
+                $resolved[$key] = preg_replace_callback(
+                    "/\{\{{$entityType}\.(\w+)\}\}/",
+                    function ($matches) use ($entity) {
+                        $attribute = $matches[1];
+                        return $entity->has($attribute) ? (string) $entity->get($attribute) : '';
+                    },
+                    $resolved[$key]
                 );
             } else {
                 $resolved[$key] = $value;
