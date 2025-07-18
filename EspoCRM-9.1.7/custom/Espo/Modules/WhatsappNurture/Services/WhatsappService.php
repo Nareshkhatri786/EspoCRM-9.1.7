@@ -2,22 +2,18 @@
 
 namespace Espo\Modules\WhatsappNurture\Services;
 
-use Espo\Core\Services\Base;
 use Espo\Core\Di;
 use Espo\ORM\EntityManager;
 use Espo\Core\Utils\Log;
 use Espo\Entities\Job;
 use Espo\Core\Utils\DateTime as DateTimeUtil;
 
-class WhatsappService extends Base implements
+class WhatsappService implements
     Di\EntityManagerAware,
     Di\LogAware
 {
     use Di\EntityManagerSetter;
     use Di\LogSetter;
-
-    private EntityManager $entityManager;
-    private Log $log;
 
     /**
      * Send WhatsApp template message
