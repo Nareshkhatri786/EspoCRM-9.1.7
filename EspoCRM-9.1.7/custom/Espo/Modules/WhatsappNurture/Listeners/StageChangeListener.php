@@ -57,7 +57,8 @@ class StageChangeListener implements BeforeSave, Di\ServiceFactoryAware, Di\LogA
                 $entity->getId(),
                 $assignedUserId,
                 'leadNurture', // Default flow name
-                $stage
+                $stage,
+                'Lead'
             );
 
             $this->log->info("Triggered WhatsApp nurture flow for lead status change: " . $entity->getId() . " -> {$stage}");

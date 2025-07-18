@@ -33,6 +33,20 @@ class CPropertyUnit extends Record
         $this->validateStatusTransition($entity);
     }
 
+    protected function afterUpdateEntity(Entity $entity, $data)
+    {
+        parent::afterUpdateEntity($entity, $data);
+
+        $this->handleStatusChangeEffects($entity);
+    }
+
+    protected function afterCreateEntity(Entity $entity, $data)
+    {
+        parent::afterCreateEntity($entity, $data);
+
+        $this->handleStatusChangeEffects($entity);
+    }
+
     private function validateStatusTransition(Entity $entity): void
     {
         $currentStatus = $entity->get('status');
@@ -93,6 +107,29 @@ class CPropertyUnit extends Record
         $previousStatus = $entity->getFetched('status');
 
         return in_array($previousStatus, ['Token Received', 'Booked', 'Cancelled']);
+    }
+
+    /**
+     * Handle effects of status changes
+     */
+    private function handleStatusChangeEffects(Entity $entity): void
+    {
+        if (!$entity->isAttributeChanged('status')) {
+            return;
+        }
+
+        $newStatus = $entity->get('status');
+        
+        // Update shortlisted opportunities relationship based on status
+        if ($newStatus === 'Shortlisted') {
+            // Keep shortlisted opportunities
+        } elseif ($newStatus !== 'Available') {
+            // Clear shortlisted opportunities for non-available statuses
+            $this->getEntityManager()
+                ->getRDBRepository('CPropertyUnit')
+                ->getRelation($entity, 'shortlistedOpportunities')
+                ->removeAll();
+        }
     }
 
     /**
